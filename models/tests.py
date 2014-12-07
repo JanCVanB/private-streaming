@@ -11,7 +11,7 @@ DEBUG = False
 def kl_divergence(distribution, approx_distribution):
     """Calculate the KL divergence for two distributions
 
-    :param distribution: original proabability distribution
+    :param distribution: original probability distribution
     :param approx_distribution: approximate of the original distribution
     """
     return tuple(np.sum(distribution) * np.log(np.array(distribution) / np.array(approx_distribution)))
@@ -26,7 +26,7 @@ def test_adversary():
     # Testing parameters
     cutoff_fractions = (0.1, 0.5)
     preference_count = 5
-    query_counts = tuple(np.logspace(0, 3.5, num=20))
+    query_counts = tuple(np.logspace(0, 3.5, num=10))
 
     curator = Curator()
     curator.network = Network(size, interactivity)
@@ -38,12 +38,10 @@ def test_adversary():
               for cutoff_fraction in cutoff_fractions}
     kl_divergences = {preference: [] for preference in preferences}
     for query_count in query_counts:
-        if DEBUG:
-            print()
         adversary.pirate(sequence_length, number_of_queries=int(query_count))
         for preference in preferences:
             if DEBUG:
-                print('Preference %d' % (preferences.index(preference) + 1))
+                print('Evaluating reconstruction with preference set %d' % (preferences.index(preference) + 1))
             adversary_probabilities = adversary.network.sequence_probabilities(preference,
                                                                                sequence_length,
                                                                                Adversary.normalize)
@@ -52,7 +50,8 @@ def test_adversary():
                                                                            curator.exponential_mechanism)
             for cutoff_fraction in cutoff_fractions:
                 cutoff_number = int(cutoff_fraction * len(curator_probabilities))
-                error_count = (sum(adversary_probabilities[i] not in sorted(adversary_probabilities)[:cutoff_number]
+                sorted_adversary_probabilities = sorted(adversary_probabilities)
+                error_count = (sum(adversary_probabilities[i] not in sorted_adversary_probabilities[:cutoff_number]
                                for i in range(len(curator_probabilities[:cutoff_number]))))
                 errors[cutoff_fraction][preference].append(1.0 * error_count / cutoff_number)
 
@@ -174,7 +173,8 @@ def test_etas():
                                                                                curator.exponential_mechanism)
                 for cutoff_fraction in cutoff_fractions:
                     cutoff_number = int(cutoff_fraction * len(curator_probabilities))
-                    error_count = (sum(adversary_probabilities[i] not in sorted(adversary_probabilities)[:cutoff_number]
+                    sorted_adversary_probabilities = sorted(adversary_probabilities)
+                    error_count = (sum(adversary_probabilities[i] not in sorted_adversary_probabilities[:cutoff_number]
                                    for i in range(len(curator_probabilities[:cutoff_number]))))
                     errors[adversary][cutoff_fraction][preference].append(1.0 * error_count / cutoff_number)
 
@@ -281,4 +281,4 @@ def test_network():
 
 
 if __name__ == '__main__':
-    test_network()
+    test_adversary()
