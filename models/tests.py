@@ -5,7 +5,7 @@ from matplotlib import pyplot
 import numpy as np
 
 
-DEBUG = False
+DEBUG = True
 
 
 def kl_divergence(distribution, approx_distribution):
@@ -26,7 +26,7 @@ def test_adversary():
     # Testing parameters
     cutoff_fractions = (0.1, 0.5)
     preference_count = 5
-    query_counts = tuple(np.logspace(0, 3.5, num=10))
+    query_counts = tuple(np.logspace(4, 4.5, num=10))
 
     curator = Curator()
     curator.network = Network(size, interactivity)

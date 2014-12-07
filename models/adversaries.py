@@ -47,16 +47,16 @@ class Adversary:
         """
         progress_bar_prefix = 'Pirating %d sequences' % number_of_queries
         progress_bar_progress = 0
-        progress_bar_size = 77 - len(progress_bar_prefix)
+        progress_bar_size = 76 - len(progress_bar_prefix)
         if DEBUG:
-            print(progress_bar_prefix + ' |' + ' ' * progress_bar_size + '|', end='')
+            print(progress_bar_prefix + ' |' + ' ' * progress_bar_size + '|', end='\r')
         for query_number in range(number_of_queries):
             if query_number / number_of_queries > progress_bar_progress / progress_bar_size:
                 progress_bar_progress += 1
                 if DEBUG:
-                    print('\r' + progress_bar_prefix + ' |' +
+                    print(progress_bar_prefix + ' |' +
                           '-' * progress_bar_progress +
-                          ' ' * (progress_bar_size - progress_bar_progress) + '|', end='')
+                          ' ' * (progress_bar_size - progress_bar_progress) + '|', end='\r')
             preferences = self.preference_combinations[self.preference_index]
             query_response = self.curator.query(sequence_length, preferences)
             sequence = [node for node in self.network.nodes for name in query_response
@@ -70,4 +70,4 @@ class Adversary:
             self.preference_index += 1
             self.preference_index %= len(self.preference_combinations)
         if DEBUG:
-            print('\r' + progress_bar_prefix + ' |' + '-' * progress_bar_size + '|')
+            print('' + progress_bar_prefix + ' |' + '-' * progress_bar_size + '|')

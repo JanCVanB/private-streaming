@@ -2,7 +2,7 @@ from itertools import product
 import random
 
 
-DEBUG = False
+DEBUG = True
 
 
 class Network:
@@ -88,16 +88,16 @@ class Network:
         sequence_probabilities = [1.0 / len(self.nodes)] * len(sequences)
         progress_bar_prefix = 'Calculating every sequence probability'
         progress_bar_progress = 0
-        progress_bar_size = 77 - len(progress_bar_prefix)
+        progress_bar_size = 76 - len(progress_bar_prefix)
         if DEBUG:
-            print(progress_bar_prefix + ' |' + ' ' * progress_bar_size + '|', end='')
+            print(progress_bar_prefix + ' |' + ' ' * progress_bar_size + '|', end='\r')
         for sequence_index in range(len(sequences)):
             if sequence_index / len(sequences) > progress_bar_progress / progress_bar_size:
                 progress_bar_progress += 1
                 if DEBUG:
-                    print('\r' + progress_bar_prefix + ' |' +
+                    print(progress_bar_prefix + ' |' +
                           '-' * progress_bar_progress +
-                          ' ' * (progress_bar_size - progress_bar_progress) + '|', end='')
+                          ' ' * (progress_bar_size - progress_bar_progress) + '|', end='\r')
             for sequence_step in range(sequence_length - 1):
                 this_node = sequences[sequence_index][sequence_step]
                 next_node = sequences[sequence_index][sequence_step + 1]
