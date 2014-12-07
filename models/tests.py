@@ -208,16 +208,17 @@ def test_etas():
 
 def test_network():
     epsilons = [100]
-    fractions_of_links_defined = [0.2, 0.4, 0.6, 0.8]
-    numbers_of_nodes = [10]
+    fractions_of_links_defined = [0.1, 0.2, 0.4, 0.7, 1.0]
+    numbers_of_nodes = [15]
     numbers_of_responses = [2]
     sequence_lengths = [4]
     utility_skew_powers = [1]
     variables = fractions_of_links_defined
     variable_name = 'Fraction of Links Defined'
-    number_of_repeat_runs = 5
+    number_of_repeat_runs = 2
     if PRINT:
-        print('Testing model by varying ' + variable_name)
+        print('Testing model by varying ' + variable_name +
+              ' as ' + ', '.join([str(x) for x in fractions_of_links_defined]))
 
     figure, (link_axes, sequence_axes) = pyplot.subplots(2, 1)
     figure.canvas.set_window_title('Content Network with Varying ' + variable_name)
@@ -229,13 +230,15 @@ def test_network():
     link_axes.set_title('Link Utilities')
     link_axes.set_xlabel('Link Index (Sorted)')
     link_axes.set_ylabel('Link Utility')
-    link_colors = [next(link_axes._get_lines.color_cycle) for _ in range(len(variables))]
+    # link_colors = [next(link_axes._get_lines.color_cycle) for _ in range(len(variables))]
+    link_colors = ['r', 'y', 'g', 'c', 'b']
     sequence_axes.set_title('Sequence Probabilities')
     sequence_axes.set_xlabel('Sequence Index (Sorted)')
     sequence_axes.set_xscale('log')
     sequence_axes.set_ylabel('Sequence Probability')
     sequence_axes.set_yscale('log')
-    sequence_colors = [next(sequence_axes._get_lines.color_cycle) for _ in range(len(variables))]
+    # sequence_colors = [next(sequence_axes._get_lines.color_cycle) for _ in range(len(variables))]
+    sequence_colors = ['r', 'y', 'g', 'c', 'b']
 
     for run_number in range(len(variables)):
         variable = variables[run_number]
@@ -270,7 +273,9 @@ def test_network():
             link_color = link_colors[run_number]
             sequence_color = sequence_colors[run_number]
             link_graph, = link_axes.plot(range(len(link_utilities)), link_utilities, c=link_color, lw=3)
-            sequence_graph, = sequence_axes.plot(range(len(sequence_probabilities)), sequence_probabilities, c=sequence_color, lw=3)
+            sequence_graph, = sequence_axes.plot(range(len(sequence_probabilities)),
+                                                 sequence_probabilities,
+                                                 alpha=0.7, c=sequence_color, lw=3)
             if not repeat_run_number:
                 link_graph.set_label(label)
                 sequence_graph.set_label(label)
@@ -281,4 +286,4 @@ def test_network():
 
 
 if __name__ == '__main__':
-    test_adversary()
+    test_network()
