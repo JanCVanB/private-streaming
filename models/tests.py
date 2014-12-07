@@ -5,7 +5,7 @@ from matplotlib import pyplot
 import numpy as np
 
 
-DEBUG = True
+PRINT = True
 
 
 def kl_divergence(distribution, approx_distribution):
@@ -40,7 +40,7 @@ def test_adversary():
     for query_count in query_counts:
         adversary.pirate(sequence_length, number_of_queries=int(query_count))
         for preference in preferences:
-            if DEBUG:
+            if PRINT:
                 print('Evaluating reconstruction with preference set %d' % (preferences.index(preference) + 1))
             adversary_probabilities = adversary.network.sequence_probabilities(preference,
                                                                                sequence_length,
@@ -100,11 +100,11 @@ def test_adversary_no_kl():
     errors = {cutoff_fraction: {preference: [] for preference in preferences}
               for cutoff_fraction in cutoff_fractions}
     for query_count in query_counts:
-        if DEBUG:
+        if PRINT:
             print()
         adversary.pirate(sequence_length, number_of_queries=int(query_count))
         for preference in preferences:
-            if DEBUG:
+            if PRINT:
                 print('Preference %d' % (preferences.index(preference) + 1))
             adversary_probabilities = adversary.network.sequence_probabilities(preference,
                                                                                sequence_length,
@@ -159,11 +159,11 @@ def test_etas():
                       for adversary in adversaries}
     for query_count in query_counts:
         for adversary in adversaries:
-            if DEBUG:
+            if PRINT:
                 print()
             adversary.pirate(sequence_length, number_of_queries=int(query_count))
             for preference in preferences:
-                if DEBUG:
+                if PRINT:
                     print('Preference %d' % (preferences.index(preference) + 1))
                 adversary_probabilities = adversary.network.sequence_probabilities(preference,
                                                                                    sequence_length,
@@ -216,7 +216,7 @@ def test_network():
     variables = fractions_of_links_defined
     variable_name = 'Fraction of Links Defined'
     number_of_repeat_runs = 5
-    if DEBUG:
+    if PRINT:
         print('Testing model by varying ' + variable_name)
 
     figure, (link_axes, sequence_axes) = pyplot.subplots(2, 1)
@@ -251,7 +251,7 @@ def test_network():
             curator.network = Network(size=number_of_nodes, interactivity=number_of_responses)
             curator.network.make_random_links(density=fraction_of_links_defined, skew_power=utility_skew_power)
             preferences = curator.network.get_random_preferences()
-            if DEBUG:
+            if PRINT:
                 print('%d Nodes, %d Responses, Sequences of %d, Density=%.3g, Epsilon=%.3g, Skew=%.3g, Run %d' %
                       (number_of_nodes, number_of_responses, sequence_length,
                        fraction_of_links_defined, epsilon, utility_skew_power, repeat_run_number))

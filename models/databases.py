@@ -2,7 +2,7 @@ from itertools import product
 import random
 
 
-DEBUG = True
+PRINT = False
 
 
 class Network:
@@ -89,12 +89,12 @@ class Network:
         progress_bar_prefix = 'Calculating every sequence probability'
         progress_bar_progress = 0
         progress_bar_size = 76 - len(progress_bar_prefix)
-        if DEBUG:
+        if PRINT:
             print(progress_bar_prefix + ' |' + ' ' * progress_bar_size + '|', end='\r')
         for sequence_index in range(len(sequences)):
             if sequence_index / len(sequences) > progress_bar_progress / progress_bar_size:
                 progress_bar_progress += 1
-                if DEBUG:
+                if PRINT:
                     print(progress_bar_prefix + ' |' +
                           '-' * progress_bar_progress +
                           ' ' * (progress_bar_size - progress_bar_progress) + '|', end='\r')
@@ -111,7 +111,7 @@ class Network:
                 probabilities = probability_conversion(utilities)
                 step_probability = probabilities[self.nodes.index(next_node)]
                 sequence_probabilities[sequence_index] *= step_probability
-        if DEBUG:
+        if PRINT:
             print('\r' + progress_bar_prefix + ' |' + '-' * progress_bar_size + '|')
         assert sum(sequence_probabilities) < 1.0001
         assert sum(sequence_probabilities) > 0.9999

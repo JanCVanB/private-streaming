@@ -2,7 +2,7 @@ from databases import Network
 from math import exp
 
 
-DEBUG = True
+PRINT = True
 
 
 class Adversary:
@@ -48,12 +48,12 @@ class Adversary:
         progress_bar_prefix = 'Pirating %d sequences' % number_of_queries
         progress_bar_progress = 0
         progress_bar_size = 76 - len(progress_bar_prefix)
-        if DEBUG:
+        if PRINT:
             print(progress_bar_prefix + ' |' + ' ' * progress_bar_size + '|', end='\r')
         for query_number in range(number_of_queries):
             if query_number / number_of_queries > progress_bar_progress / progress_bar_size:
                 progress_bar_progress += 1
-                if DEBUG:
+                if PRINT:
                     print(progress_bar_prefix + ' |' +
                           '-' * progress_bar_progress +
                           ' ' * (progress_bar_size - progress_bar_progress) + '|', end='\r')
@@ -69,5 +69,5 @@ class Adversary:
                 link.utility *= exp(self.eta)
             self.preference_index += 1
             self.preference_index %= len(self.preference_combinations)
-        if DEBUG:
+        if PRINT:
             print('' + progress_bar_prefix + ' |' + '-' * progress_bar_size + '|')
